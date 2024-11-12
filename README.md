@@ -1,5 +1,40 @@
-# Vue 3 + Vite
+## 开发
+npm run dev
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+/src/App.vue中的 baseServer 与 endPoint 替换为自己实际的 服务器 与 路由 
+/src/router/index.js 中的 /share 替换为自己实际的路由
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+如果不清楚路由要填什么的可参考源码和下方的nginx配置
+
+## 打包
+npm run build
+
+## 部署
+nginx配置如下，替换一下path-to-your-dist
+
+```nginx
+location /share {
+    alias <path-to-your-dist>;
+    index index.html;
+
+    # history router
+    try_files $uri $uri/ /share/index.html;
+}
+
+location /shareserver {
+    # nginx autoindex
+    alias /www/share;
+    autoindex on;
+    # 返回json
+    autoindex_format json;
+    autoindex_exact_size off;
+        autoindex_localtime on;
+    charset utf-8;
+
+    # optionally allow CORS, if this frontend is running somewhere else
+    add_header Access-Control-Allow-Origin *;
+
+    # 防止nginx自动读取index.html 而不反回json
+    index sdafshdkfjlgydfgdf.html;
+}
+```
