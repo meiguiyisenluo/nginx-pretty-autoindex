@@ -6,7 +6,7 @@ import path from "path";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [vue()],
-  base: "./",
+  base: "/share",
   build: {
     outDir: "nginx-autoindex-pretty-ui",
   },
