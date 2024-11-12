@@ -8,6 +8,7 @@ console.log(route);
 const baseServer = "https://luoyisen.com";
 const endPoint = "/shareserver";
 
+const loading = ref(false);
 const list = ref([]);
 
 const routeStack = computed(() => {
@@ -23,12 +24,14 @@ const getData = (
   url = `${baseServer}${(endPoint + route.path).replace("//", "/")}`
 ) => {
   console.log(url);
+  loading.value = true;
   fetch(url)
     .then((_) => _.json())
     .then((res) => {
       list.value = res;
       updateHistory();
-    });
+    })
+    .finally(() => (loading.value = false));
 };
 
 router.isReady().then(getData);
@@ -78,6 +81,10 @@ const isImage = (name) => {
 
 <template>
   <div class="page">
+    <Transition>
+      <div v-show="loading" class="loading">加载中...</div>
+    </Transition>
+
     <div class="total">共{{ list.length }}项</div>
 
     <div class="hd">
@@ -129,6 +136,7 @@ const isImage = (name) => {
 
 <style scoped lang="scss">
 .page {
+  user-select: none;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
@@ -136,6 +144,21 @@ const isImage = (name) => {
   box-sizing: border-box;
   background-color: #333;
   color: #e6e6e6;
+
+  .loading {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
 
   .total {
     position: fixed;
@@ -325,5 +348,15 @@ const isImage = (name) => {
       }
     }
   }
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>
