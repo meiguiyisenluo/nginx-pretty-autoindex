@@ -2,6 +2,7 @@
 npm run dev
 
 /src/App.vue中的 baseServer 与 endPoint 替换为自己实际的 服务器 与 路由 
+
 /src/router/index.js 中的 /share 替换为自己实际的路由
 
 如果不清楚路由要填什么的可参考源码和下方的nginx配置
