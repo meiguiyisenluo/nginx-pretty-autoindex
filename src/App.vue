@@ -121,8 +121,10 @@ const generateTooltip = (item) => {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  padding: 2rem;
+  padding: 2rem 1rem;
   box-sizing: border-box;
+  background-color: #333;
+  color: #e6e6e6;
 
   .hd {
     width: 100%;
@@ -214,6 +216,9 @@ const generateTooltip = (item) => {
   .grid {
     display: flex;
     flex-wrap: wrap;
+    width: 100%;
+    height: calc(100% - 2.5rem);
+    overflow: auto;
     .item {
       cursor: pointer;
       width: 7rem;
