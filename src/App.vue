@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
+
 const router = useRouter();
 const route = useRoute();
 
@@ -28,10 +29,15 @@ const getData = (uri = spliceUri()) => {
   fetch(uri)
     .then((_) => _.json())
     .then((res) => {
-      list.value = res.map((_) => ({
-        ..._,
-        uri: `${uri}/${_.name}`,
-      }));
+      list.value = res.map((_) => {
+        const obj = {
+          ..._,
+          uri: `${uri}/${_.name}`,
+          isImage: isImage(_.name),
+          isMP4: isMP4(_.name),
+        };
+        return obj;
+      });
       updateHistory();
     })
     .finally(() => (loading.value = false));
@@ -81,6 +87,10 @@ const changeMode = () => {
 const isImage = (name) => {
   return /\.jpg|\.jpeg|\.png|\.gif|\.svg|\.webp/i.test(name);
 };
+
+const isMP4 = (name) => {
+  return /\.mp4/i.test(name);
+};
 </script>
 
 <template>
@@ -125,7 +135,13 @@ const isImage = (name) => {
         :key="idx"
         @click="onclickItem(item)"
       >
-        <img v-if="mode == 1 && isImage(item.name)" :src="item.uri" alt="" />
+        <img v-if="mode == 1 && item.isImage" :src="item.uri" alt="" />
+        <video
+          v-else-if="mode == 1 && item.isMP4"
+          :src="item.uri"
+          :autoplay="false"
+          :controls="false"
+        ></video>
         <div v-else class="icon" :class="`${item.type}`"></div>
         <div class="name">{{ item.name }}</div>
         <div class="time">{{ item.mtime }}</div>
@@ -300,7 +316,8 @@ const isImage = (name) => {
       height: auto;
       margin-bottom: 0.5rem;
 
-      img {
+      img,
+      video {
         display: block;
         width: 4rem;
         margin: 0 auto;
