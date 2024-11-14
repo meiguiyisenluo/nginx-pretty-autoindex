@@ -34,7 +34,7 @@ const getData = (
     .finally(() => (loading.value = false));
 };
 
-router.isReady().then(getData);
+// router.isReady().then(getData);
 router.afterEach(() => getData());
 
 const onclickItem = (item) => {
@@ -117,16 +117,16 @@ const isImage = (name) => {
     <div :class="modeList[mode]">
       <div
         class="item"
-        :class="{ image: isImage(item.name) }"
         v-for="(item, idx) in list"
         :key="idx"
         @click="onclickItem(item)"
       >
         <img
+          v-if="mode == 1 && isImage(item.name)"
           :src="`${baseServer}${endPoint}${route.path}/${item.name}`"
           alt=""
         />
-        <div class="icon" :class="`${item.type}`"></div>
+        <div v-else class="icon" :class="`${item.type}`"></div>
         <div class="name">{{ item.name }}</div>
         <div class="time">{{ item.mtime }}</div>
       </div>
@@ -259,6 +259,7 @@ const isImage = (name) => {
       img {
         display: none;
       }
+
       .icon {
         width: 1rem;
         height: 1rem;
@@ -298,9 +299,13 @@ const isImage = (name) => {
       width: 7rem;
       height: auto;
       margin-bottom: 0.5rem;
+
       img {
-        display: none;
+        display: block;
+        width: 4rem;
+        margin: 0 auto;
       }
+
       .icon {
         margin: 0 auto;
         width: 4rem;
@@ -334,17 +339,6 @@ const isImage = (name) => {
       }
       .time {
         display: none;
-      }
-
-      &.image {
-        img {
-          display: block;
-          width: 4rem;
-          margin: 0 auto;
-        }
-        .icon {
-          display: none;
-        }
       }
     }
   }
