@@ -24,15 +24,15 @@ const updateHistory = () => {
   vhistory.value = window.history;
 };
 
-const getData = (url = spliceUri()) => {
-  console.log(url);
+const getData = (uri = spliceUri()) => {
+  console.log(uri);
   loading.value = true;
-  fetch(url)
+  fetch(uri)
     .then((_) => _.json())
     .then((res) => {
       list.value = res.map((_) => ({
         ..._,
-        imgSrc: `${url}/${_.name}`,
+        uri: `${uri}/${_.name}`,
       }));
       updateHistory();
     })
@@ -67,8 +67,7 @@ const backToDirectory = (idx) => {
 };
 
 const openFile = (item) => {
-  const url = `${spliceUri()}/${item.name}`;
-  window.open(url);
+  window.open(item.uri);
 };
 
 const mode = ref(
@@ -82,7 +81,7 @@ const changeMode = () => {
 };
 
 const isImage = (name) => {
-  return /\.jpg|\.jpeg|\.png|\.gif/i.test(name);
+  return /\.jpg|\.jpeg|\.png|\.gif|\.svg|\.webp/i.test(name);
 };
 </script>
 
@@ -128,7 +127,7 @@ const isImage = (name) => {
         :key="idx"
         @click="onclickItem(item)"
       >
-        <img v-if="mode == 1 && isImage(item.name)" :src="item.imgSrc" alt="" />
+        <img v-if="mode == 1 && isImage(item.name)" :src="item.uri" alt="" />
         <div v-else class="icon" :class="`${item.type}`"></div>
         <div class="name">{{ item.name }}</div>
         <div class="time">{{ item.mtime }}</div>
