@@ -11,6 +11,10 @@ const endPoint = "/shareserver";
 const loading = ref(false);
 const list = ref([]);
 
+const spliceUri = () => {
+  return `${baseServer}${(endPoint + route.path).replace("//", "/")}`;
+};
+
 const routeStack = computed(() => {
   return route.path.split("/").filter((_) => !!_);
 });
@@ -20,15 +24,16 @@ const updateHistory = () => {
   vhistory.value = window.history;
 };
 
-const getData = (
-  url = `${baseServer}${(endPoint + route.path).replace("//", "/")}`
-) => {
+const getData = (url = spliceUri()) => {
   console.log(url);
   loading.value = true;
   fetch(url)
     .then((_) => _.json())
     .then((res) => {
-      list.value = res;
+      list.value = res.map((_) => ({
+        ..._,
+        imgSrc: `${url}/${_.name}`,
+      }));
       updateHistory();
     })
     .finally(() => (loading.value = false));
@@ -62,7 +67,7 @@ const backToDirectory = (idx) => {
 };
 
 const openFile = (item) => {
-  const url = `${baseServer}${endPoint}${route.path}/${item.name}`;
+  const url = `${spliceUri()}/${item.name}`;
   window.open(url);
 };
 
@@ -121,11 +126,7 @@ const isImage = (name) => {
         :key="idx"
         @click="onclickItem(item)"
       >
-        <img
-          v-if="mode == 1 && isImage(item.name)"
-          :src="`${baseServer}${endPoint}${route.path}/${item.name}`"
-          alt=""
-        />
+        <img v-if="mode == 1 && isImage(item.name)" :src="item.imgSrc" alt="" />
         <div v-else class="icon" :class="`${item.type}`"></div>
         <div class="name">{{ item.name }}</div>
         <div class="time">{{ item.mtime }}</div>
