@@ -3,7 +3,6 @@ import { ref, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 const router = useRouter();
 const route = useRoute();
-console.log(route);
 
 const baseServer = "https://luoyisen.com";
 const endPoint = "/shareserver";
@@ -25,7 +24,6 @@ const updateHistory = () => {
 };
 
 const getData = (uri = spliceUri()) => {
-  console.log(uri);
   loading.value = true;
   fetch(uri)
     .then((_) => _.json())
