@@ -71,7 +71,9 @@ const openFile = (item) => {
   window.open(url);
 };
 
-const mode = ref(Number(localStorage.mode || 0) || 0);
+const mode = ref(
+  window.innerWidth < 500 ? 1 : Number(localStorage.mode || 0) || 0
+);
 const modeList = ["list", "grid"];
 const changeMode = () => {
   mode.value += 1;
