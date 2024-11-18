@@ -1,17 +1,22 @@
 ## 开发
+
+RouterConfig.js 中的
+autoindex_server: 服务器地址
+autoindex_endpoint: nginx autoindex json 路由
+web_endpoint: 本项目打包dist的服务路由
+
+如果不清楚路由要填什么的可参考源码和下方的 nginx 配置 或者使用完全一样的配置
+
+npm install
 npm run dev
 
-/src/App.vue中的 baseServer 与 endPoint 替换为自己实际的 服务器 与 路由 
-
-/src/router/index.js 与 vite.config.js 中的 /share 替换为自己实际的路由
-
-如果不清楚路由要填什么的可参考源码和下方的nginx配置
-
 ## 打包
+
 npm run build
 
 ## 部署
-nginx配置如下，替换一下path-to-your-dist
+
+nginx 配置如下，替换一下 path-to-your-dist
 
 ```nginx
 location /share {
