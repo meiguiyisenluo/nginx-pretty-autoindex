@@ -1,12 +1,13 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import {
+  autoindex_server as baseServer,
+  autoindex_endpoint as endPoint,
+} from "../RouterConfig.json";
 
 const router = useRouter();
 const route = useRoute();
-
-const baseServer = "https://luoyisen.com";
-const endPoint = "/shareserver";
 
 const loading = ref(false);
 const list = ref([]);

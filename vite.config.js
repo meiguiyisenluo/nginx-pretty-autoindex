@@ -3,10 +3,12 @@ import vue from "@vitejs/plugin-vue";
 
 import path from "path";
 
+import { web_endpoint } from "./RouterConfig.json";
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [vue()],
-  base: "/share",
+  base: web_endpoint,
   build: {
     outDir: "nginx-autoindex-pretty-ui",
   },
