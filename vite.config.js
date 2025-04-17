@@ -9,9 +9,6 @@ import { web_endpoint } from "./RouterConfig.json";
 export default defineConfig({
   plugins: [vue()],
   base: web_endpoint,
-  build: {
-    outDir: "nginx-autoindex-pretty-ui",
-  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
